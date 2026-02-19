@@ -59,6 +59,39 @@ def add():
         message=msg
     )
 
+@app.get("/status")
+def status():
+    backup_dir = "/backup"
+    db_path = "/data/app.db" 
+    
+    count = 0
+    try:
+        conn = sqlite3.connect(db_path)
+        cursor = conn.cursor()
+        cursor.execute("SELECT COUNT(*) FROM events") 
+        count = cursor.fetchone()[0]
+        conn.close()
+    except Exception as e:
+        count = f"Erreur: {str(e)}"
+
+    list_of_backups = glob.glob(os.path.join(backup_dir, "app-*.db"))
+    
+    if list_of_backups:
+        latest_backup = max(list_of_backups, key=os.path.getctime)
+        backup_file_name = os.path.basename(latest_backup)
+        
+        stats = os.stat(latest_backup)
+        backup_age_seconds = int(time.time() - stats.st_mtime)
+    else:
+        backup_file_name = "Aucun backup trouvé"
+        backup_age_seconds = -1
+
+    return jsonify({
+        "count": count,
+        "last_backup_file": backup_file_name,
+        "backup_age_seconds": backup_age_seconds
+    })
+
 @app.get("/consultation")
 def consultation():
     init_db()
