@@ -231,28 +231,24 @@ Faites preuve de pédagogie et soyez clair dans vos explications et procedures d
 **Exercice 1 :**  
 Quels sont les composants dont la perte entraîne une perte de données ?  
   
-*..Répondez à cet exercice ici..*
+Si le disque dur vient a tomber en panne la perte de données est assurée car la BDD en production et Backup sont sur le meme disque
 
 **Exercice 2 :**  
 Expliquez nous pourquoi nous n'avons pas perdu les données lors de la supression du PVC pra-data  
-  
-*..Répondez à cet exercice ici..*
-
+  Car les données du PVC pra-data sont également sauvegarde dans le PVC pra-backup chaque minute, on peut donc faire une restauration des données a partir de la
 **Exercice 3 :**  
 Quels sont les RTO et RPO de cette solution ?  
-  
-*..Répondez à cet exercice ici..*
+  le RPO ici est toutes les données avant la sauvegarde, soit 1 minutes de données
+
+  le RTO est très rapide tant que le technicien est présent et au courant de la panne, entre 5 et 15 minutes sont largement suffisante pour remettre la sauvegarde de la BDD
 
 **Exercice 4 :**  
 Pourquoi cette solution (cet atelier) ne peux pas être utilisé dans un vrai environnement de production ? Que manque-t-il ?   
-  
-*..Répondez à cet exercice ici..*
-  
+  Il manque une redondance des disques durs et des alertes pour un technicien aussi bien pour la bonne éxecution des sauvegardes que la panne de la BDD
 **Exercice 5 :**  
 Proposez une archtecture plus robuste.   
-  
-*..Répondez à cet exercice ici..*
-
+  Une architecture plus solide serait 1 disque dur pour le PVC pre data, 1 disque dur pour le PVC pra backup et une copie sur un cloud externe,
+  Ajouter a cela une notification de bonne execution des sauvegardes et une alerte de panne sur tout les disques et une notification d'état de stockage une fois par semaine
 ---------------------------------------------------
 Séquence 6 : Ateliers  
 Difficulté : Moyenne (~2 heures)
